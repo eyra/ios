@@ -46,8 +46,10 @@ class Factory {
         return webView
     }()
     
-    func createViewController() -> ViewController {
-        ViewController(webView: webView, viewControllerManager: viewControllerManager)
+    func createViewController(screenId: String) -> ViewController {
+        let viewController = ViewController(webView: webView, viewControllerManager: viewControllerManager)
+        viewController.screenId = screenId
+        return viewController
     }
     
     func createModalViewController(rootViewController: ViewController) -> ModalViewController {

@@ -9,12 +9,14 @@ import WebKit
 
 class ScriptWrapper {
 
-    enum Function: String {
-        case screenIsPopped
-        case modalIsPopped
+    enum Function {
+        case popToScreen(String)
         
         func toScript() -> String {
-            "\(self.rawValue)()"
+            switch self {
+            case .popToScreen(let screenId):
+                return "window.setScreenFromNative('\(screenId)')"
+            }
         }
     }
     
@@ -24,14 +26,10 @@ class ScriptWrapper {
         self.webView = webView
     }
     
-    @objc func screenIsPopped() {
-        execute(function: .screenIsPopped)
+    @objc func popToScreen(screenId: String) {
+        execute(function: .popToScreen(screenId))
     }
-    
-    @objc func modalIsPopped() {
-        execute(function: .modalIsPopped)
-    }
-    
+        
     func execute(function: Function) {
         webView.evaluateJavaScript(function.toScript()) { (_, error) in
             if let error = error {

@@ -17,9 +17,26 @@ class ViewControllerManager: ScriptMessageDelegate {
         return modalViewControllers.last ?? rootModalViewController
     }
     
-    func push() {
-        let viewController = factory.createViewController()
-        currentModalViewController.pushViewController(viewController, animated: true)
+    func push(screenId: String) {
+        if popDetected(screenId) {
+            pop()
+        } else {
+            let viewController = factory.createViewController(screenId: screenId)
+            currentModalViewController.pushViewController(viewController, animated: true)
+        }
+    }
+
+    func popDetected(_ screenId: String) -> Bool {
+        guard let previous = previousViewController(modalViewController: currentModalViewController),
+              let previousScreenId = previous.screenId,
+              previousScreenId == screenId else { return false }
+        return true
+    }
+        
+    func previousViewController(modalViewController: ModalViewController) -> ViewController? {
+        let count = modalViewController.viewControllers.count
+        guard count >= 2 else { return nil }
+        return modalViewController.viewControllers[count-2] as? ViewController
     }
         
     func pop() {
@@ -47,26 +64,33 @@ class ViewControllerManager: ScriptMessageDelegate {
         }
     }
     
-    func update(title: String) {
-        if let currentViewController = currentModalViewController.topViewController {
+    func update(screenId: String, title: String) {
+        if let currentViewController = currentModalViewController.topViewController as? ViewController {
+            currentViewController.screenId = screenId
             currentViewController.navigationItem.title = title
         }
     }
     
     func isPopped(viewController: ViewController, fromScript: Bool) {
         if !fromScript {
-            scriptWrapper.screenIsPopped()
+            popToTop()
         }
     }
-    
+        
     func isDismissed(modalViewController: ModalViewController, fromScript: Bool) {
         if !fromScript {
             modalViewControllers.removeLast()
-            scriptWrapper.modalIsPopped()
+            popToTop()
         }
         
         if let topViewController =  currentModalViewController.topViewController as? ViewController {
             topViewController.showWebView()
+        }
+    }
+    
+    private func popToTop() {
+        if let topScreenId = (currentModalViewController.topViewController as? ViewController)?.screenId {
+            scriptWrapper.popToScreen(screenId: topScreenId)
         }
     }
 }

@@ -12,6 +12,7 @@ class ViewController: UIViewController, WKUIDelegate {
 
     let webView: WKWebView
     let viewControllerManager: ViewControllerManager
+    var screenId: String?
     
     let screenshot: UIImageView = {
         let view = UIImageView()
