@@ -40,7 +40,7 @@ class Factory {
 
         let webView =  WKWebView(frame: CGRect.zero, configuration: configuration)
         
-        var request = URLRequest(url: URL(string: "http://localhost:8000/native-demo.html")!)
+        var request = URLRequest(url: URL(string: "http://localhost:4000")!)
         request.cachePolicy = .reloadIgnoringLocalCacheData
         webView.load(request)
         return webView

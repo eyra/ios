@@ -18,8 +18,6 @@ class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
             switch type {
             case .push:
                 delegate.push()
-            case .pop:
-                delegate.pop()
             case .present:
                 delegate.present()
             case .dismiss:
@@ -33,7 +31,6 @@ class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
 
 enum ScriptMessage {
     case push
-    case pop
     case present
     case dismiss
     case update(String)
@@ -44,8 +41,7 @@ enum ScriptMessage {
         let title = userInfo["title"] as? String
         
         switch (message.name, type) {
-        case ("Push", "regular"): self = .push
-        case ("Pop", "regular"): self = .pop
+        case ("Push", "open"): self = .push
         case ("Push", "modal"): self = .present
         case ("Pop", "modal"): self = .dismiss
         case ("UpdateScreen", _): self = .update(title ?? "?")
@@ -56,7 +52,6 @@ enum ScriptMessage {
 
 protocol ScriptMessageDelegate {
     func push()
-    func pop()
     func present()
     func dismiss()
     func update(title: String)
