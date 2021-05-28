@@ -46,7 +46,7 @@ class Factory {
         return webView
     }()
     
-    func createViewController(screenId: String) -> ViewController {
+    func createViewController(screenId: String? = nil) -> ViewController {
         let viewController = ViewController(webView: webView, viewControllerManager: viewControllerManager)
         viewController.screenId = screenId
         return viewController
