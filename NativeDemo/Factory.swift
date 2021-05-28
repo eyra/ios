@@ -37,6 +37,7 @@ class Factory {
         
         let configuration = WKWebViewConfiguration()
         configuration.userContentController = controller
+        configuration.applicationNameForUserAgent = "NativeWrapper"
 
         let webView =  WKWebView(frame: CGRect.zero, configuration: configuration)
         
