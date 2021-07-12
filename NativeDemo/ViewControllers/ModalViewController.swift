@@ -9,11 +9,11 @@ import UIKit
 
 class ModalViewController: UINavigationController {
     
-    let viewControllerManager: ViewControllerManager
+    let navigationHandler: NavigationHandler
     var willBeDismissedFromScript: Bool = false
     
-    init(rootViewController: ViewController, viewControllerManager: ViewControllerManager) {
-        self.viewControllerManager = viewControllerManager
+    init(rootViewController: ViewController, navigationHandler: NavigationHandler) {
+        self.navigationHandler = navigationHandler
         super.init(rootViewController: rootViewController)
     }
     
@@ -21,13 +21,36 @@ class ModalViewController: UINavigationController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if let topViewController = topViewController as? ViewController {
-            topViewController.showWebView()
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationHandler.isDismissed(modalViewController: self, fromScript: willBeDismissedFromScript)
+    }
+    
+    public func pushViewController(
+        _ viewController: UIViewController,
+        animated: Bool,
+        completion: @escaping () -> Void)
+    {
+        pushViewController(viewController, animated: animated)
+
+        guard animated, let coordinator = transitionCoordinator else {
+            DispatchQueue.main.async { completion() }
+            return
         }
+
+        coordinator.animate(alongsideTransition: nil) { _ in completion() }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        viewControllerManager.isDismissed(modalViewController: self, fromScript: willBeDismissedFromScript)
+    func popViewController(
+        animated: Bool,
+        completion: @escaping () -> Void)
+    {
+        popViewController(animated: animated)
+
+        guard animated, let coordinator = transitionCoordinator else {
+            DispatchQueue.main.async { completion() }
+            return
+        }
+
+        coordinator.animate(alongsideTransition: nil) { _ in completion() }
     }
 }

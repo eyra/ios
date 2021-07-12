@@ -10,12 +10,12 @@ import WebKit
 class ScriptWrapper {
 
     enum Function {
-        case popToScreen(String)
+        case popToScreen(String, String)
         
         func toScript() -> String {
             switch self {
-            case .popToScreen(let screenId):
-                return "window.setScreenFromNative('\(screenId)')"
+            case .popToScreen(let screenId, let state):
+                return "window.setScreenFromNative('\(screenId)', \(state))"
             }
         }
     }
@@ -26,8 +26,11 @@ class ScriptWrapper {
         self.webView = webView
     }
     
-    @objc func popToScreen(screenId: String) {
-        execute(function: .popToScreen(screenId))
+    @objc func popToScreen(screenId: String, state: Any?) {
+        let data = try! JSONSerialization.data(withJSONObject: state ?? [], options: .prettyPrinted)
+        let dataString = String(decoding: data, as: UTF8.self)
+        print("popToScreen: \(screenId)")
+        execute(function: .popToScreen(screenId, dataString))
     }
         
     func execute(function: Function) {

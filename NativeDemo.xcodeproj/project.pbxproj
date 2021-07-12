@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		171F38622662345100E9CF22 /* WebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171F38612662345100E9CF22 /* WebViewManager.swift */; };
+		171F386B2664C64000E9CF22 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171F386A2664C64000E9CF22 /* Transition.swift */; };
+		171F386E2664C68F00E9CF22 /* TransitionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171F386D2664C68F00E9CF22 /* TransitionBuilder.swift */; };
+		171F38722664D2FC00E9CF22 /* ScreenshotProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171F38712664D2FC00E9CF22 /* ScreenshotProvider.swift */; };
 		17843DDC264EA29800BE1D0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843DDB264EA29800BE1D0D /* AppDelegate.swift */; };
 		17843DDE264EA29800BE1D0D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843DDD264EA29800BE1D0D /* SceneDelegate.swift */; };
 		17843DE0264EA29800BE1D0D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843DDF264EA29800BE1D0D /* ViewController.swift */; };
@@ -16,12 +20,16 @@
 		17843DF4265267F500BE1D0D /* ScriptMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843DF3265267F500BE1D0D /* ScriptMessageHandler.swift */; };
 		17843DF726526F4F00BE1D0D /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843DF626526F4F00BE1D0D /* Factory.swift */; };
 		17843DFA26528D2500BE1D0D /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843DF926528D2500BE1D0D /* ModalViewController.swift */; };
-		17843E012653166B00BE1D0D /* ViewControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843E002653166B00BE1D0D /* ViewControllerManager.swift */; };
+		17843E012653166B00BE1D0D /* NavigationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843E002653166B00BE1D0D /* NavigationHandler.swift */; };
 		17843E0426531FBE00BE1D0D /* ScriptWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843E0326531FBE00BE1D0D /* ScriptWrapper.swift */; };
 		17843E0726532CED00BE1D0D /* UIView+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17843E0626532CED00BE1D0D /* UIView+image.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		171F38612662345100E9CF22 /* WebViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewManager.swift; sourceTree = "<group>"; };
+		171F386A2664C64000E9CF22 /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
+		171F386D2664C68F00E9CF22 /* TransitionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionBuilder.swift; sourceTree = "<group>"; };
+		171F38712664D2FC00E9CF22 /* ScreenshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotProvider.swift; sourceTree = "<group>"; };
 		17843DD8264EA29800BE1D0D /* NativeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17843DDB264EA29800BE1D0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17843DDD264EA29800BE1D0D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +41,7 @@
 		17843DF3265267F500BE1D0D /* ScriptMessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptMessageHandler.swift; sourceTree = "<group>"; };
 		17843DF626526F4F00BE1D0D /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		17843DF926528D2500BE1D0D /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
-		17843E002653166B00BE1D0D /* ViewControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerManager.swift; sourceTree = "<group>"; };
+		17843E002653166B00BE1D0D /* NavigationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHandler.swift; sourceTree = "<group>"; };
 		17843E0326531FBE00BE1D0D /* ScriptWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptWrapper.swift; sourceTree = "<group>"; };
 		17843E0626532CED00BE1D0D /* UIView+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+image.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,10 +92,12 @@
 		17843E092653B64800BE1D0D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				17843E002653166B00BE1D0D /* ViewControllerManager.swift */,
+				17843E002653166B00BE1D0D /* NavigationHandler.swift */,
 				17843DDF264EA29800BE1D0D /* ViewController.swift */,
 				17843DF0264EB62000BE1D0D /* MainViewController.swift */,
 				17843DF926528D2500BE1D0D /* ModalViewController.swift */,
+				171F386A2664C64000E9CF22 /* Transition.swift */,
+				171F386D2664C68F00E9CF22 /* TransitionBuilder.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -97,6 +107,8 @@
 			children = (
 				17843DF3265267F500BE1D0D /* ScriptMessageHandler.swift */,
 				17843E0326531FBE00BE1D0D /* ScriptWrapper.swift */,
+				171F38612662345100E9CF22 /* WebViewManager.swift */,
+				171F38712664D2FC00E9CF22 /* ScreenshotProvider.swift */,
 			);
 			path = Script;
 			sourceTree = "<group>";
@@ -178,15 +190,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17843E012653166B00BE1D0D /* ViewControllerManager.swift in Sources */,
+				171F38722664D2FC00E9CF22 /* ScreenshotProvider.swift in Sources */,
+				17843E012653166B00BE1D0D /* NavigationHandler.swift in Sources */,
 				17843DF4265267F500BE1D0D /* ScriptMessageHandler.swift in Sources */,
 				17843DE0264EA29800BE1D0D /* ViewController.swift in Sources */,
+				171F386E2664C68F00E9CF22 /* TransitionBuilder.swift in Sources */,
 				17843DF726526F4F00BE1D0D /* Factory.swift in Sources */,
 				17843DDC264EA29800BE1D0D /* AppDelegate.swift in Sources */,
 				17843DDE264EA29800BE1D0D /* SceneDelegate.swift in Sources */,
+				171F386B2664C64000E9CF22 /* Transition.swift in Sources */,
 				17843E0726532CED00BE1D0D /* UIView+image.swift in Sources */,
 				17843E0426531FBE00BE1D0D /* ScriptWrapper.swift in Sources */,
 				17843DF1264EB62000BE1D0D /* MainViewController.swift in Sources */,
+				171F38622662345100E9CF22 /* WebViewManager.swift in Sources */,
 				17843DFA26528D2500BE1D0D /* ModalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

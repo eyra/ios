@@ -10,19 +10,38 @@ import WebKit
 
 class ViewController: UIViewController, WKUIDelegate {
 
-    let webView: WKWebView
-    let viewControllerManager: ViewControllerManager
-    var screenId: String?
+    let screenshotProvider: ScreenshotProvider
+    let navigationHandler: NavigationHandler
+    var screenId: String!
+    var state: Any?
+    var id: String
     
-    let screenshot: UIImageView = {
-        let view = UIImageView()
-        view.backgroundColor = .red
+    var onMenuButtonTapped: (()->Void)?
+
+    let webViewContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
         return view
     }()
 
-    init(webView: WKWebView, viewControllerManager: ViewControllerManager) {
-        self.webView = webView
-        self.viewControllerManager = viewControllerManager
+    let screenshot: UIImageView = {
+        let view = UIImageView()
+        view.backgroundColor = .white
+        view.isUserInteractionEnabled = false
+        return view
+    }()
+    
+    let menuButton: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+
+    init(id: String, screenId: String, screenshotProvider: ScreenshotProvider, navigationHandler: NavigationHandler) {
+        self.id = id
+        self.screenId = screenId
+        self.screenshotProvider = screenshotProvider
+        self.navigationHandler = navigationHandler
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -35,46 +54,65 @@ class ViewController: UIViewController, WKUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        
+        webViewContainer.frame = view.bounds
+        view.addSubview(webViewContainer)
+
+        screenshot.frame = view.bounds
+        view.addSubview(screenshot)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "menu", style: .plain, target: self, action: #selector(menuButtonTapped))
+    }
+    
+    @objc func menuButtonTapped() {
+        print("menuButtonTapped")
+        onMenuButtonTapped?()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if isMovingToParent { // push from native UI
-            showWebView()
-        }
     }
         
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showWebView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         showScreenshot()
-    }
-        
-    override func viewDidDisappear(_ animated: Bool) {
         if isMovingFromParent { // pop from native UI
-            viewControllerManager.isPopped(viewController: self, fromScript: willBePoppedFromScript)
+            navigationHandler.willBePopped(viewController: self, fromScript: willBePoppedFromScript)
         }
-        showScreenshot()
         super.viewWillDisappear(animated)
     }
-
-    func showScreenshot() {
-        if screenshot.image == nil {
-            screenshot.image =  webView.asImage()
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if isMovingFromParent { // pop from native UI
+            navigationHandler.isPopped(viewController: self)
         }
-        screenshot.frame = view.bounds
-        view.addSubview(screenshot)
+        super.viewDidDisappear(animated)
+    }
+
+        
+    func showScreenshot() {
+        screenshot.image = screenshotProvider.screenshot(for: self)
+        screenshot.alpha = 1
     }
     
-    func showWebView() {
-        if webView.superview != self.view {
-            webView.frame = self.view.bounds
-            view.addSubview(webView)
+    func hideScreenshot(animated: Bool) {
+        let duration = animated ? 0.3 : 0
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) { [weak self] in
+            self?.screenshot.alpha = 0
+        } completion: { _ in
+            print("screenshot hidden")
         }
-        screenshot.removeFromSuperview()
-    }    
+    }
+    
+    func showWebView(webView: WKWebView, animated: Bool) {
+        if webView.superview != self.view {
+            webView.frame = webViewContainer.bounds
+            webViewContainer.addSubview(webView)
+        }
+        hideScreenshot(animated: animated)
+    }
 }
 

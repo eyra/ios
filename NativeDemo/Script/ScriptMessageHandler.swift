@@ -24,6 +24,10 @@ class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
                 delegate.dismiss()
             case .update(let screenId, let title):
                 delegate.update(screenId: screenId, title: title)
+            case .state(let state):
+                delegate.state(state: state)
+            case .webReady(let screenId):
+                delegate.webReady(screenId: screenId)
             }
         }
     }
@@ -34,18 +38,35 @@ enum ScriptMessage {
     case present
     case dismiss
     case update(String, String)
-    
+    case state(Any)
+    case webReady(String)
+
     init?(message: WKScriptMessage) {
         guard let userInfo = message.body as? NSDictionary else { return nil }
         let type = userInfo["type"] as? String
-        let screenId = userInfo["id"] as? String
-        let title = userInfo["title"] as? String
         
-        switch (message.name, type) {
-        case ("Push", "open"): self = .push(screenId ?? "?")
-        case ("Push", "modal"): self = .present
-        case ("Pop", "modal"): self = .dismiss
-        case ("UpdateScreen", _): self = .update(screenId ?? "?", title ?? "?")
+        switch (type) {
+        case ("openScreen"):
+            guard let screenId = userInfo["id"] as? String else { return nil }
+            self = .push(screenId)
+        case ("pushModal"):
+            self = .present
+        case ("popModal"):
+            self = .dismiss
+        case ("updateScreen"):
+            guard
+                let screenId = userInfo["id"] as? String,
+                let title = userInfo["title"] as? String
+            else { return nil }
+            self = .update(screenId, title)
+        case ("webReady"):
+            guard
+                let screenId = userInfo["id"] as? String
+            else { return nil }
+            self = .webReady(screenId)
+        case ("setScreenState"):
+            guard let state = userInfo["state"] else { return nil }
+            self = .state(state)
         default: return nil
         }
     }
@@ -56,4 +77,6 @@ protocol ScriptMessageDelegate {
     func present()
     func dismiss()
     func update(screenId: String, title: String)
+    func state(state: Any)
+    func webReady(screenId: String)
 }
